@@ -1,0 +1,66 @@
+/* The plugin's design tokens, derived from the --orca-* variables Orca sets on every frame and
+   from the light or dark class Orca puts on <html>. */
+
+:root {
+  color-scheme: light;
+  --dbml-font-sans: var(--orca-font-sans, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif);
+  --dbml-font-mono: var(--orca-font-mono, ui-monospace, 'SF Mono', Menlo, Consolas, monospace);
+  --dbml-radius: var(--orca-radius, 6px);
+
+  --dbml-surface: var(--orca-background, #ffffff);
+  --dbml-surface-text: var(--orca-foreground, #1f2328);
+  --dbml-border: var(--orca-border, #d0d7de);
+  --dbml-hover: var(--orca-accent, #f3f4f6);
+  --dbml-hover-text: var(--orca-accent-foreground, #1f2328);
+  --dbml-muted: var(--orca-muted, #f6f8fa);
+  --dbml-muted-text: var(--orca-muted-foreground, #656d76);
+  --dbml-popover: var(--orca-popover, var(--dbml-surface));
+  --dbml-popover-text: var(--orca-popover-foreground, var(--dbml-surface-text));
+  --dbml-danger: var(--orca-destructive, #cf222e);
+  --dbml-warning: #9a6700;
+  --dbml-accent: #2563eb;
+  --dbml-on-accent: #ffffff;
+  --dbml-accent-soft: color-mix(in srgb, var(--dbml-accent) 14%, transparent);
+}
+
+:root.dark {
+  color-scheme: dark;
+  --dbml-warning: #d29922;
+  --dbml-accent: #60a5fa;
+  --dbml-on-accent: #0b1220;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--dbml-surface);
+  color: var(--dbml-surface-text);
+  font: 13px/1.4 var(--dbml-font-sans);
+  overflow: hidden;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

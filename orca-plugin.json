@@ -1,0 +1,68 @@
+{
+  "$schema": "https://raw.githubusercontent.com/stablyai/orca/main/docs/schemas/plugins/orca-plugin.v2.schema.json",
+  "manifestVersion": 2,
+  "execution": "sandboxed-ui",
+  "id": "dbml",
+  "name": "DBML",
+  "version": "1.0.0",
+  "description": "DBML schemas as live ER diagrams: highlighting, diagnostics and completion, a split code and diagram view, and PNG or SVG export.",
+  "author": {
+    "name": "brian-rey-development",
+    "url": "https://github.com/brian-rey-development"
+  },
+  "repository": "https://github.com/brian-rey-development/orca-dbml",
+  "license": "MIT",
+  "icon": "images/icon.png",
+  "engines": {
+    "orca": ">=1.4.247"
+  },
+  "contributes": {
+    "syntaxes": [
+      {
+        "id": "dbml",
+        "title": "DBML",
+        "scopeName": "source.dbml",
+        "path": "syntaxes/dbml.tmLanguage.json",
+        "configuration": "syntaxes/language-configuration.json",
+        "extensions": [".dbml"]
+      }
+    ],
+    "customEditors": [
+      {
+        "id": "diagram",
+        "title": "Diagram",
+        "icon": "images/icon.png",
+        "extensions": [".dbml"],
+        "entry": "editor/index.html",
+        "priority": "default"
+      }
+    ],
+    "newFiles": [
+      {
+        "id": "schema",
+        "title": "New DBML schema",
+        "extension": ".dbml",
+        "template": "templates/schema.dbml"
+      }
+    ]
+  },
+  "capabilities": [],
+  "cover": {
+    "path": "images/cover.png",
+    "alt": "An online store schema drawn as an ER diagram: customers, products, orders and order items, with a sales table group and a sticky note"
+  },
+  "screenshots": [
+    {
+      "path": "images/split-light.png",
+      "alt": "DBML code with syntax highlighting beside its live ER diagram",
+      "caption": "Code and diagram side by side",
+      "theme": "light"
+    },
+    {
+      "path": "images/split-dark.png",
+      "alt": "The same split view of code and diagram in a dark Orca theme",
+      "caption": "Follows the Orca theme",
+      "theme": "dark"
+    }
+  ]
+}

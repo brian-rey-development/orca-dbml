@@ -1,0 +1,58 @@
+/* Diagram colors. theme.ts reads these variables by name. */
+
+:root {
+  --dbml-canvas: var(--dbml-surface);
+  --dbml-grid: color-mix(in srgb, var(--dbml-surface-text) 13%, transparent);
+  --dbml-card: var(--orca-card, #ffffff);
+  --dbml-card-border: var(--dbml-border);
+  --dbml-header: var(--dbml-muted);
+  --dbml-header-text: var(--orca-card-foreground, #1f2328);
+  --dbml-text: var(--orca-card-foreground, #1f2328);
+  --dbml-row-divider: color-mix(in srgb, var(--dbml-border) 55%, transparent);
+  --dbml-primary-key: #b7791f;
+  --dbml-foreign-key: #2563eb;
+  --dbml-relation: color-mix(in srgb, var(--dbml-muted-text) 85%, transparent);
+  --dbml-relation-active: var(--dbml-accent);
+  --dbml-selection: var(--dbml-accent);
+  --dbml-note: #fdf3c4;
+  --dbml-note-text: #3d3200;
+  --dbml-group: var(--dbml-muted-text);
+}
+
+:root.dark {
+  --dbml-primary-key: #e3b341;
+  --dbml-foreign-key: #60a5fa;
+  --dbml-note: #4a4020;
+  --dbml-note-text: #f5e7a8;
+}
+
+.diagram {
+  position: relative;
+  flex: 1;
+  height: 100%;
+  min-width: 0;
+  background: var(--dbml-canvas);
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.canvas:active {
+  cursor: grabbing;
+}
+
+.canvas:focus-visible {
+  outline: 2px solid var(--dbml-accent);
+  outline-offset: -2px;
+}
+
+.canvas .dbml-table,
+.canvas .dbml-note {
+  cursor: move;
+}

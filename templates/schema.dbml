@@ -1,0 +1,57 @@
+Project shop {
+  database_type: 'PostgreSQL'
+  Note: 'An online store: customers place orders for products.'
+}
+
+Enum order_status {
+  pending
+  paid
+  shipped
+  cancelled [note: 'Refunded when already paid']
+}
+
+TableGroup sales [color: #2563eb] {
+  orders
+  order_items
+}
+
+Table customers [headercolor: #0f766e] {
+  id integer [pk, increment]
+  email varchar(255) [not null, unique]
+  name varchar(120) [not null]
+  created_at timestamp [not null, default: `now()`]
+}
+
+Table products [headercolor: #7c3aed] {
+  id integer [pk, increment]
+  sku varchar(32) [not null, unique]
+  name varchar(200) [not null]
+  price_cents integer [not null, note: 'Price in cents, to avoid rounding']
+}
+
+Table orders {
+  id integer [pk, increment]
+  customer_id integer [not null, ref: > customers.id]
+  status order_status [not null, default: 'pending']
+  placed_at timestamp [not null, default: `now()`]
+
+  indexes {
+    (customer_id, placed_at)
+  }
+}
+
+Table order_items {
+  order_id integer [not null]
+  product_id integer [not null, ref: > products.id]
+  quantity integer [not null, default: 1]
+
+  indexes {
+    (order_id, product_id) [pk]
+  }
+}
+
+Ref: order_items.order_id > orders.id [delete: cascade]
+
+Note checkout {
+  'Orders are placed in one transaction with their items.'
+}

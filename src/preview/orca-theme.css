@@ -1,0 +1,31 @@
+/* Stand-ins for the --orca-* variables Orca sets on plugin frames, for the development preview. */
+
+:root.light {
+  --orca-background: #ffffff;
+  --orca-foreground: #18181b;
+  --orca-card: #ffffff;
+  --orca-card-foreground: #18181b;
+  --orca-popover: #ffffff;
+  --orca-popover-foreground: #18181b;
+  --orca-muted: #f4f4f5;
+  --orca-muted-foreground: #71717a;
+  --orca-accent: #f4f4f5;
+  --orca-accent-foreground: #18181b;
+  --orca-border: #e4e4e7;
+  --orca-destructive: #dc2626;
+}
+
+:root.dark {
+  --orca-background: #18181b;
+  --orca-foreground: #fafafa;
+  --orca-card: #212124;
+  --orca-card-foreground: #fafafa;
+  --orca-popover: #212124;
+  --orca-popover-foreground: #fafafa;
+  --orca-muted: #2a2a2e;
+  --orca-muted-foreground: #a1a1aa;
+  --orca-accent: #2a2a2e;
+  --orca-accent-foreground: #fafafa;
+  --orca-border: #34343a;
+  --orca-destructive: #f87171;
+}

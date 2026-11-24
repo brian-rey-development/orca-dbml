@@ -1,0 +1,64 @@
+/* Syntax colors. dbml-language.ts reads these variables by name. */
+
+:root {
+  --dbml-syntax-keyword: #8250df;
+  --dbml-syntax-definition: #0550ae;
+  --dbml-syntax-property: #1f2328;
+  --dbml-syntax-type: #0a7f83;
+  --dbml-syntax-setting: #953800;
+  --dbml-syntax-string: #0a3069;
+  --dbml-syntax-literal: #0550ae;
+  --dbml-syntax-operator: #6e7781;
+  --dbml-syntax-comment: #6e7781;
+}
+
+:root.dark {
+  --dbml-syntax-keyword: #d2a8ff;
+  --dbml-syntax-definition: #79c0ff;
+  --dbml-syntax-property: #e6edf3;
+  --dbml-syntax-type: #56d4dd;
+  --dbml-syntax-setting: #ffa657;
+  --dbml-syntax-string: #a5d6ff;
+  --dbml-syntax-literal: #79c0ff;
+  --dbml-syntax-operator: #8b949e;
+  --dbml-syntax-comment: #8b949e;
+}
+
+.dbml-code {
+  height: 100%;
+  background: var(--dbml-surface);
+  color: var(--dbml-surface-text);
+  font-size: 13px;
+}
+
+.dbml-code .cm-scroller {
+  font-family: var(--dbml-font-mono);
+  line-height: 1.55;
+}
+
+.dbml-code .cm-gutters {
+  border-right: 1px solid var(--dbml-border);
+  background: var(--dbml-surface);
+  color: var(--dbml-muted-text);
+}
+
+.dbml-code .cm-activeLine,
+.dbml-code .cm-activeLineGutter {
+  background: color-mix(in srgb, var(--dbml-hover) 60%, transparent);
+}
+
+.dbml-code .cm-cursor {
+  border-left-color: var(--dbml-surface-text);
+}
+
+.dbml-code .cm-tooltip,
+.dbml-code .cm-panels {
+  border-color: var(--dbml-border);
+  background: var(--dbml-popover);
+  color: var(--dbml-popover-text);
+}
+
+.dbml-code .cm-tooltip-autocomplete > ul > li[aria-selected] {
+  background: var(--dbml-accent);
+  color: var(--dbml-on-accent);
+}

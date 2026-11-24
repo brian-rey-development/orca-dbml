@@ -1,0 +1,5 @@
+node_modules/
+.orca/
+.preview/
+coverage/
+.DS_Store

@@ -1,0 +1,700 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "DBML",
+  "scopeName": "source.dbml",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#project"
+    },
+    {
+      "include": "#table"
+    },
+    {
+      "include": "#enum"
+    },
+    {
+      "include": "#table-group"
+    },
+    {
+      "include": "#ref"
+    },
+    {
+      "include": "#sticky-note"
+    },
+    {
+      "include": "#records"
+    },
+    {
+      "include": "#note-property"
+    },
+    {
+      "include": "#imports"
+    },
+    {
+      "include": "#values"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.dbml",
+          "begin": "//",
+          "end": "$",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.dbml"
+            }
+          }
+        },
+        {
+          "name": "comment.block.dbml",
+          "begin": "/\\*",
+          "end": "\\*/",
+          "captures": {
+            "0": {
+              "name": "punctuation.definition.comment.dbml"
+            }
+          }
+        }
+      ]
+    },
+    "identifier": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.identifier.dbml",
+          "begin": "\"",
+          "end": "\"|$",
+          "patterns": [
+            {
+              "name": "constant.character.escape.dbml",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "variable.other.dbml",
+          "match": "[\\p{L}_][\\p{L}\\p{N}_]*"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.triple.dbml",
+          "begin": "'''",
+          "end": "'''",
+          "patterns": [
+            {
+              "name": "constant.character.escape.dbml",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.single.dbml",
+          "begin": "'",
+          "end": "'|$",
+          "patterns": [
+            {
+              "name": "constant.character.escape.dbml",
+              "match": "\\\\."
+            }
+          ]
+        },
+        {
+          "name": "string.interpolated.expression.dbml",
+          "begin": "`",
+          "end": "`|$"
+        }
+      ]
+    },
+    "values": {
+      "patterns": [
+        {
+          "include": "#strings"
+        },
+        {
+          "name": "constant.other.color.rgb-value.hex.dbml",
+          "match": "#\\h{3,8}\\b"
+        },
+        {
+          "name": "constant.numeric.dbml",
+          "match": "-?\\b\\d+(?:\\.\\d+)?\\b"
+        },
+        {
+          "name": "constant.language.dbml",
+          "match": "(?i)\\b(?:true|false|null)\\b"
+        },
+        {
+          "name": "keyword.operator.relationship.dbml",
+          "match": "<>|<|>|-"
+        },
+        {
+          "name": "punctuation.separator.dbml",
+          "match": "[,:.]"
+        }
+      ]
+    },
+    "settings": {
+      "name": "meta.settings.dbml",
+      "begin": "\\[",
+      "end": "\\]|(?=[{}])",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.section.settings.begin.dbml"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.settings.end.dbml"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "name": "constant.language.referential-action.dbml",
+          "match": "(?i)\\b(?:cascade|restrict|set\\s+null|set\\s+default|no\\s+action)\\b"
+        },
+        {
+          "name": "constant.language.index-type.dbml",
+          "match": "(?i)\\b(?:btree|hash)\\b"
+        },
+        {
+          "name": "storage.modifier.dbml",
+          "match": "(?i)\\b(?:pk|primary\\s+key|increment|unique|not\\s+null|null)\\b"
+        },
+        {
+          "match": "(?i)\\b(note|default|ref|delete|update|headercolor|color|name|type|check)\\s*(:)",
+          "captures": {
+            "1": {
+              "name": "entity.other.attribute-name.dbml"
+            },
+            "2": {
+              "name": "punctuation.separator.key-value.dbml"
+            }
+          }
+        },
+        {
+          "include": "#values"
+        },
+        {
+          "include": "#identifier"
+        }
+      ]
+    },
+    "block-name": {
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "match": "(?i)\\b(as)\\s+(\"[^\"]*\"|[\\p{L}_][\\p{L}\\p{N}_]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.other.as.dbml"
+            },
+            "2": {
+              "name": "entity.name.type.alias.dbml"
+            }
+          }
+        },
+        {
+          "name": "entity.name.type.dbml",
+          "match": "(?:\"[^\"]*\"|[\\p{L}_][\\p{L}\\p{N}_]*)(?:\\.(?:\"[^\"]*\"|[\\p{L}_][\\p{L}\\p{N}_]*))?"
+        },
+        {
+          "include": "#settings"
+        }
+      ]
+    },
+    "note-property": {
+      "patterns": [
+        {
+          "match": "(?i)^\\s*(note)\\s*(:)",
+          "captures": {
+            "1": {
+              "name": "keyword.other.note.dbml"
+            },
+            "2": {
+              "name": "punctuation.separator.key-value.dbml"
+            }
+          }
+        },
+        {
+          "name": "meta.note.dbml",
+          "begin": "(?i)^\\s*(note)\\s*(\\{)",
+          "end": "\\}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.other.note.dbml"
+            },
+            "2": {
+              "name": "punctuation.section.block.begin.dbml"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.block.end.dbml"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comments"
+            },
+            {
+              "include": "#strings"
+            }
+          ]
+        }
+      ]
+    },
+    "project": {
+      "name": "meta.project.dbml",
+      "begin": "(?i)^\\s*(project)\\b",
+      "end": "\\}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.other.project.dbml"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.block.end.dbml"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#note-property"
+        },
+        {
+          "match": "^\\s*([\\p{L}_][\\p{L}\\p{N}_]*)\\s*(:)",
+          "captures": {
+            "1": {
+              "name": "variable.other.property.dbml"
+            },
+            "2": {
+              "name": "punctuation.separator.key-value.dbml"
+            }
+          }
+        },
+        {
+          "name": "punctuation.section.block.begin.dbml",
+          "match": "\\{"
+        },
+        {
+          "include": "#strings"
+        },
+        {
+          "include": "#block-name"
+        }
+      ]
+    },
+    "table": {
+      "name": "meta.table.dbml",
+      "begin": "(?i)^\\s*(table|tablepartial)\\b",
+      "end": "(?<=\\})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.other.table.dbml"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#table-body"
+        },
+        {
+          "include": "#block-name"
+        }
+      ]
+    },
+    "table-body": {
+      "name": "meta.table.body.dbml",
+      "begin": "\\{",
+      "end": "\\}",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.section.block.begin.dbml"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.block.end.dbml"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#note-property"
+        },
+        {
+          "include": "#indexes"
+        },
+        {
+          "include": "#checks"
+        },
+        {
+          "include": "#records"
+        },
+        {
+          "match": "(~)\\s*([\\p{L}_][\\p{L}\\p{N}_]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.operator.partial.dbml"
+            },
+            "2": {
+              "name": "entity.name.type.partial.dbml"
+            }
+          }
+        },
+        {
+          "include": "#column"
+        },
+        {
+          "include": "#settings"
+        },
+        {
+          "include": "#values"
+        }
+      ]
+    },
+    "column": {
+      "match": "^\\s*(\"[^\"]*\"|[\\p{L}_][\\p{L}\\p{N}_]*)\\s+(\"[^\"]*\"|[\\p{L}_][\\p{L}\\p{N}_.]*(?:\\s*\\([^)]*\\))?(?:\\[\\])*)",
+      "captures": {
+        "1": {
+          "name": "variable.other.member.column.dbml"
+        },
+        "2": {
+          "name": "storage.type.dbml"
+        }
+      }
+    },
+    "indexes": {
+      "name": "meta.indexes.dbml",
+      "begin": "(?i)\\b(indexes)\\s*(\\{)",
+      "end": "\\}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.other.indexes.dbml"
+        },
+        "2": {
+          "name": "punctuation.section.block.begin.dbml"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.block.end.dbml"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#settings"
+        },
+        {
+          "include": "#strings"
+        },
+        {
+          "name": "variable.other.member.column.dbml",
+          "match": "[\\p{L}_][\\p{L}\\p{N}_]*"
+        }
+      ]
+    },
+    "checks": {
+      "name": "meta.checks.dbml",
+      "begin": "(?i)\\b(checks)\\s*(\\{)",
+      "end": "\\}",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.other.checks.dbml"
+        },
+        "2": {
+          "name": "punctuation.section.block.begin.dbml"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.section.block.end.dbml"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#settings"
+        },
+        {
+          "include": "#strings"
+        }
+      ]
+    },
+    "enum": {
+      "name": "meta.enum.dbml",
+      "begin": "(?i)^\\s*(enum)\\b",
+      "end": "(?<=\\})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.other.enum.dbml"
+        }
+      },
+      "patterns": [
+        {
+          "begin": "\\{",
+          "end": "\\}",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.block.begin.dbml"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.block.end.dbml"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comments"
+            },
+            {
+              "include": "#settings"
+            },
+            {
+              "name": "variable.other.enummember.dbml",
+              "match": "\"[^\"]*\"|[\\p{L}_][\\p{L}\\p{N}_]*"
+            }
+          ]
+        },
+        {
+          "include": "#block-name"
+        }
+      ]
+    },
+    "table-group": {
+      "name": "meta.table-group.dbml",
+      "begin": "(?i)^\\s*(tablegroup)\\b",
+      "end": "(?<=\\})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.other.table-group.dbml"
+        }
+      },
+      "patterns": [
+        {
+          "begin": "\\{",
+          "end": "\\}",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.block.begin.dbml"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.block.end.dbml"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comments"
+            },
+            {
+              "include": "#note-property"
+            },
+            {
+              "include": "#strings"
+            },
+            {
+              "include": "#identifier"
+            },
+            {
+              "name": "punctuation.separator.dbml",
+              "match": "\\."
+            }
+          ]
+        },
+        {
+          "include": "#block-name"
+        }
+      ]
+    },
+    "ref": {
+      "patterns": [
+        {
+          "name": "meta.ref.dbml",
+          "begin": "(?i)^\\s*(ref)\\b([^:{\\n]*)(\\{)",
+          "end": "\\}",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.other.ref.dbml"
+            },
+            "2": {
+              "name": "entity.name.function.ref.dbml"
+            },
+            "3": {
+              "name": "punctuation.section.block.begin.dbml"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.block.end.dbml"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#ref-endpoints"
+            }
+          ]
+        },
+        {
+          "name": "meta.ref.dbml",
+          "begin": "(?i)^\\s*(ref)\\b([^:\\n]*)(:)",
+          "end": "$",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.other.ref.dbml"
+            },
+            "2": {
+              "name": "entity.name.function.ref.dbml"
+            },
+            "3": {
+              "name": "punctuation.separator.key-value.dbml"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#ref-endpoints"
+            }
+          ]
+        }
+      ]
+    },
+    "ref-endpoints": {
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#settings"
+        },
+        {
+          "name": "keyword.operator.relationship.dbml",
+          "match": "<>|<|>|-"
+        },
+        {
+          "include": "#identifier"
+        },
+        {
+          "name": "punctuation.separator.dbml",
+          "match": "[.,()]"
+        }
+      ]
+    },
+    "sticky-note": {
+      "name": "meta.sticky-note.dbml",
+      "begin": "(?i)^\\s*(note)\\s+(\"[^\"]*\"|[\\p{L}_][\\p{L}\\p{N}_]*)",
+      "end": "(?<=\\})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.other.note.dbml"
+        },
+        "2": {
+          "name": "entity.name.type.note.dbml"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#settings"
+        },
+        {
+          "begin": "\\{",
+          "end": "\\}",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.block.begin.dbml"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.block.end.dbml"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comments"
+            },
+            {
+              "include": "#strings"
+            }
+          ]
+        }
+      ]
+    },
+    "records": {
+      "name": "meta.records.dbml",
+      "begin": "(?i)^\\s*(records)\\b",
+      "end": "(?<=\\})",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.other.records.dbml"
+        }
+      },
+      "patterns": [
+        {
+          "begin": "\\{",
+          "end": "\\}",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.block.begin.dbml"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.block.end.dbml"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#comments"
+            },
+            {
+              "include": "#values"
+            }
+          ]
+        },
+        {
+          "include": "#block-name"
+        },
+        {
+          "name": "punctuation.separator.dbml",
+          "match": "[(),]"
+        }
+      ]
+    },
+    "imports": {
+      "match": "(?i)^\\s*(use|reuse)\\b|\\b(from)\\b",
+      "captures": {
+        "1": {
+          "name": "keyword.control.import.dbml"
+        },
+        "2": {
+          "name": "keyword.control.from.dbml"
+        }
+      }
+    }
+  }
+}

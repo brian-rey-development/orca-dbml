@@ -1,0 +1,4 @@
+editor/
+pnpm-lock.yaml
+.orca/
+THIRD_PARTY_NOTICES.md
