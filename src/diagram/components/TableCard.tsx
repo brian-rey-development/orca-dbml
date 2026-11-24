@@ -1,7 +1,8 @@
-import { KeyRound, Link2 } from 'lucide-preact'
+import { KeyRound, Link2, StickyNote } from 'lucide-preact'
 import { memo } from 'preact/compat'
 import type { Rect } from '../../layout/geometry'
 import type { Column, Table } from '../../schema/model'
+import { tooltipProps } from '../../tooltip'
 import {
   TABLE_CARD,
   columnNameStyle,
@@ -42,7 +43,6 @@ function TableCardView({ view, theme, measure, dimmed, selected, detail }: Table
       transform={`translate(${rect.x} ${rect.y})`}
       opacity={dimmed ? DIMMED_OPACITY : 1}
     >
-      {table.note ? <title>{table.note}</title> : null}
       <CardBackground rect={rect} theme={theme} selected={selected} />
       <TableHeader table={table} width={rect.width} theme={theme} measure={measure} />
       {detail === 'full' ? (
@@ -109,8 +109,9 @@ function TableHeader({ table, width, theme, measure }: TableHeaderProps) {
   const fill = table.color ?? theme.headerFill
   const textColor = textOnFill(table.color, theme.headerText)
   return (
-    <g class="dbml-table-header">
+    <g class="dbml-table-header" {...tooltipProps(table.note)}>
       <path d={headerPath(width, headerHeight)} fill={fill} />
+      {table.note ? <NoteMarker width={width} color={textColor} /> : null}
       <text
         x={paddingX}
         y={headerHeight / 2}
@@ -138,8 +139,8 @@ function ColumnRow({ column, index, width, theme, measure }: ColumnRowProps) {
   const middle = rowCenter(index)
   const text = columnText(column, width, measure)
   return (
-    <g class="dbml-column">
-      <title>{describeColumn(column)}</title>
+    <g class="dbml-column" {...tooltipProps(describeColumn(column))}>
+      <rect y={top} width={width} height={TABLE_CARD.rowHeight} fill="transparent" />
       {index > 0 ? <line x1={0} x2={width} y1={top} y2={top} stroke={theme.rowDivider} /> : null}
       <ColumnIcon column={column} x={paddingX} y={middle - iconSize / 2} theme={theme} />
       <ColumnName column={column} name={text.name} y={middle} theme={theme} />
@@ -204,6 +205,13 @@ function ColumnIcon({ column, x, y, theme }: ColumnIconProps) {
   if (column.primaryKey) return <KeyRound x={x} y={y} size={size} color={theme.primaryKey} />
   if (column.foreignKey) return <Link2 x={x} y={y} size={size} color={theme.foreignKey} />
   return null
+}
+
+/** Tells the person the table has a note, which its header shows on hover. */
+function NoteMarker({ width, color }: { readonly width: number; readonly color: string }) {
+  const { headerHeight, paddingX, iconSize } = TABLE_CARD
+  const x = width - paddingX - iconSize
+  return <StickyNote x={x} y={(headerHeight - iconSize) / 2} size={iconSize} color={color} />
 }
 
 function headerPath(width: number, height: number): string {

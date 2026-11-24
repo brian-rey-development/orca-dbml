@@ -1,5 +1,6 @@
 import type { ComponentChildren } from 'preact'
 import type { LucideIcon } from 'lucide-preact'
+import { tooltipProps } from '../../tooltip'
 
 const ICON_SIZE = 15
 
@@ -23,7 +24,7 @@ export function IconButton(props: IconButtonProps) {
     <button
       type="button"
       class={className ? `icon-button ${className}` : 'icon-button'}
-      title={label}
+      {...tooltipProps(label)}
       aria-label={children ? undefined : label}
       aria-pressed={props.pressed}
       aria-expanded={props.expanded}

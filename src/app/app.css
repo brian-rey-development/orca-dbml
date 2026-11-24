@@ -289,3 +289,23 @@
   color: var(--dbml-muted-text);
   text-align: center;
 }
+
+/* Tooltips: Orca's editor webview never shows native title tooltips, so the plugin draws these. */
+
+.tooltip {
+  position: fixed;
+  z-index: 20;
+  /* Otherwise the box shrinks to the room beside its previous position and is measured too narrow. */
+  width: max-content;
+  max-width: 320px;
+  padding: 4px 8px;
+  border: 1px solid var(--dbml-border);
+  border-radius: var(--dbml-radius);
+  background: var(--dbml-popover);
+  color: var(--dbml-popover-text);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 14%);
+  font: 12px/1.45 var(--dbml-font-sans);
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+}

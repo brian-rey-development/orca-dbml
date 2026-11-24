@@ -35,6 +35,8 @@ Table orders {
   status order_status [not null, default: 'pending']
   placed_at timestamp [not null, default: `now()`]
 
+  Note: 'One row per checkout; its items are in order_items.'
+
   indexes {
     (customer_id, placed_at)
   }

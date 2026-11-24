@@ -1,5 +1,6 @@
 import { memo } from 'preact/compat'
 import type { Rect } from '../../layout/geometry'
+import { tooltipProps } from '../../tooltip'
 import { GROUP_FRAME } from '../card-layout'
 import type { GroupView } from '../scene'
 import { fontAttributes } from '../text-measure'
@@ -17,8 +18,7 @@ function GroupFrameView({ view, theme }: GroupFrameProps) {
   const { group, rect } = view
   const tint = group.color ?? theme.groupTint
   return (
-    <g class="dbml-group">
-      {group.note ? <title>{group.note}</title> : null}
+    <g class="dbml-group" {...tooltipProps(group.note)}>
       <GroupBox rect={rect} tint={tint} />
       <GroupLabel group={group} rect={rect} theme={theme} />
     </g>

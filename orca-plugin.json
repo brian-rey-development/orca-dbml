@@ -4,7 +4,7 @@
   "execution": "sandboxed-ui",
   "id": "dbml",
   "name": "DBML",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "DBML schemas as live ER diagrams: highlighting, diagnostics and completion, a split code and diagram view, and PNG or SVG export.",
   "author": {
     "name": "brian-rey-development",
@@ -63,6 +63,12 @@
       "alt": "The same split view of code and diagram in a dark Orca theme",
       "caption": "Follows the Orca theme",
       "theme": "dark"
+    },
+    {
+      "path": "images/hover-note.png",
+      "alt": "Hovering the price_cents column shows its type, not null constraint and note, while the tables it is not connected to fade",
+      "caption": "Notes and constraints on hover",
+      "theme": "light"
     }
   ]
 }

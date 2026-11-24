@@ -1,4 +1,5 @@
 import { memo } from 'preact/compat'
+import { tooltipProps } from '../../tooltip'
 import { relationIdProps } from '../dom'
 import { DIMMED_RELATION_OPACITY } from '../emphasis'
 import type { MarkerShape } from '../markers'
@@ -50,9 +51,8 @@ function RelationHitArea({ path, label }: { readonly path: string; readonly labe
       stroke="transparent"
       stroke-width={HIT_AREA_WIDTH}
       pointer-events="stroke"
-    >
-      <title>{label}</title>
-    </path>
+      {...tooltipProps(label)}
+    />
   )
 }
 

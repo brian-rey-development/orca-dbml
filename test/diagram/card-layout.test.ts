@@ -7,6 +7,7 @@ import {
   fitText,
   measureTable,
   noteLines,
+  tableTitle,
   visibleColumns,
   type TextMeasure
 } from '../../src/diagram/card-layout'
@@ -62,6 +63,23 @@ describe('measureTable', () => {
     expect(measureTable(posts, key, boldIsWider).width).toBeGreaterThan(
       measureTable(posts, key, fixedWidth).width
     )
+  })
+})
+
+describe('a table note', () => {
+  const title = 'a_table_name_long_enough_to_set_the_card_width'
+  const [plain, noted] =
+    compileDbml(`Table ${title} { id int }
+      Table ${title}_2 [note: 'Kept for audits'] { id int }`).schema?.tables ?? []
+
+  it('widens the card by the note marker, so the title still fits beside it', () => {
+    if (!plain || !noted) throw new Error('expected both tables')
+    const extraTitle = CHARACTER_WIDTH * '_2'.length
+    expect(measureTable(noted, [], fixedWidth).width).toBe(
+      measureTable(plain, [], fixedWidth).width + extraTitle + TABLE_CARD.iconSlot
+    )
+    const width = measureTable(noted, [], fixedWidth).width
+    expect(tableTitle(noted, width, fixedWidth)).toBe(noted.displayName)
   })
 })
 

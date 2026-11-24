@@ -111,7 +111,8 @@ function baseEditing(): Extension {
     bracketMatching(),
     closeBrackets(),
     highlightSelectionMatches(),
-    search({ top: true })
+    search({ top: true }),
+    EditorView.lineWrapping
   ]
 }
 

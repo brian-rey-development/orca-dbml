@@ -67,8 +67,8 @@ export function columnNameStyle(column: Column): TextStyle {
 }
 
 export function measureTable(table: Table, columns: readonly Column[], measure: TextMeasure): Size {
-  const { headerHeight, rowHeight, paddingX, minWidth, maxWidth } = TABLE_CARD
-  const titleWidth = measure(table.displayName, 'title') + paddingX * 2
+  const { headerHeight, rowHeight, minWidth, maxWidth } = TABLE_CARD
+  const titleWidth = measure(table.displayName, 'title') + headerChrome(table)
   const rowWidths = columns.map(
     (column) =>
       ROW_CHROME + measure(column.name, columnNameStyle(column)) + measure(column.type, 'type')
@@ -114,7 +114,12 @@ export function columnText(column: Column, width: number, measure: TextMeasure):
 }
 
 export function tableTitle(table: Table, width: number, measure: TextMeasure): string {
-  return fitText(table.displayName, width - TABLE_CARD.paddingX * 2, 'title', measure)
+  return fitText(table.displayName, width - headerChrome(table), 'title', measure)
+}
+
+/** The header's room beside the title: its padding, and the note marker when there is a note. */
+function headerChrome(table: Table): number {
+  return TABLE_CARD.paddingX * 2 + (table.note ? TABLE_CARD.iconSlot : 0)
 }
 
 export function fitText(
