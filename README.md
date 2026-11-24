@@ -10,29 +10,29 @@
 
 ![The diagram view of an online store schema](images/cover.png)
 
-Agents write database schemas faster than anyone can read them, and a hundred lines of `Table` blocks say little about how the tables connect. This plugin opens every `.dbml` file as code beside a live diagram, so you can see a schema's shape at a glance and still edit the text. It parses with `@dbml/parse`, the compiler behind dbdiagram.io, so the errors it reports and the relationships it draws match what the official DBML tools see in the same file.
+Coding agents write database schemas faster than anyone can read them, and a long list of `Table` blocks rarely shows how the tables connect. This plugin opens every `.dbml` file in Orca as code on the left and a diagram on the right, so you can see the structure at a glance and still edit the text. It uses `@dbml/parse`, which is the same compiler dbdiagram.io uses, so the errors and relationships you see match the official tools.
 
 ## Install
 
-The plugin is listed in the community catalog of the [Orca plugin directory](https://orca.dev/plugins/brian-rey-development/orca-dbml). To install it straight from this repository instead, open **Settings → Plugins** in Orca, choose **Add plugin → From a Git URL…** and paste this URL.
+You can find **DBML** in the [Orca plugin directory](https://orca.dev/plugins/brian-rey-development/orca-dbml). If you prefer to install it straight from GitHub, open **Settings → Plugins** in Orca, choose **Add plugin → From a Git URL…** and paste this URL.
 
 ```
 https://github.com/brian-rey-development/orca-dbml#v1.1.0
 ```
 
-The plugin asks for no capabilities. It never reaches the network, the file system or your terminals, and it only reads and edits the `.dbml` file it has open.
+The plugin doesn't ask for any permissions, because it only reads and edits the `.dbml` file you have open.
 
 ## Features
 
-- **Split view.** The DBML source sits on the left and the diagram on the right. The diagram redraws 150 ms after you stop typing, and a file an agent rewrites updates in both panes without moving your cursor.
-- **An editor that knows DBML.** It highlights the syntax, underlines the compiler's errors and warnings, and completes keywords, column types, settings, table names and the columns after `table.`. Long lines wrap. Orca's own Source view is highlighted too.
-- **Diagrams that survive typos.** While the text does not compile, the diagram keeps the last valid version and a banner counts the problems, which open in a list that jumps to each line.
-- **Everything DBML can describe.** Header colors, primary and foreign keys, relationships in crow's foot notation, table groups as tinted frames, sticky notes as cards, enums and table partials (`~name`).
-- **Notes on hover.** Hovering a column shows its type, constraints, default, enum values and note. A table with a note has a note icon in its header, and hovering the header shows the note.
-- **A layout you control.** Tables are arranged automatically, parents to the left of their children, and you can drag any of them. Positions are remembered per file, and a new table is placed beside your arrangement rather than reshuffling it. **Auto-arrange** starts over.
-- **Large schemas stay readable.** The toolbar can reduce every table to its key columns or to its name, and **Find table** jumps to a table by name.
-- **Export.** Save the diagram as PNG or SVG through Orca's save dialog.
-- **A starting point.** **New DBML schema** in the + menu creates a file from a small online store example.
+- **Live diagram.** The diagram updates while you type, and when an agent rewrites the file, both panes update without moving your cursor.
+- **DBML editor.** The code pane highlights the syntax, underlines errors and suggests keywords, types and table names as you type. Long lines wrap.
+- **Survives typos.** When the syntax breaks, the last diagram that worked stays on screen and the errors are listed, so you can click one to jump to its line.
+- **All of DBML.** It draws header colors, keys, table groups, sticky notes, enums and table partials, and it shows relationships in crow's foot notation.
+- **Notes on hover.** Hovering a column shows its type, constraints and note, and tables that have a note show a small icon in their header.
+- **Your layout.** Tables are arranged for you at first, but you can drag them anywhere and they stay where you put them. **Auto-arrange** starts over.
+- **Big schemas.** When a schema gets crowded, you can show only key columns or only table names, and **Find table** jumps to a table by name.
+- **Export.** You can save the diagram as a PNG or an SVG.
+- **Example file.** **New DBML schema** in the + menu creates a small online store schema to start from.
 
 <p align="center">
   <img src="images/hover-note.png" width="49%" alt="Hovering the price_cents column shows its type, constraint and note">
@@ -56,11 +56,13 @@ The plugin asks for no capabilities. It never reaches the network, the file syst
 
 ## Limits
 
-Orca gives a custom editor the open document but never its path or the file system, so the plugin sees one file at a time and DBML's multi-file `use` imports report the imported names as missing. Export appears only in Orca's desktop app, because the browser clients have no save dialog. SQL export is left out, since the official exporter loads every SQL grammar it supports, about 16 MB of code. For SQL, run the official [`@dbml/cli`](https://dbml.dbdiagram.io/cli) in an Orca terminal, for example `dbml2sql schema.dbml --postgres`.
+- **One file at a time.** Orca doesn't give plugins access to the file system, so names brought in with DBML `use` imports show up as missing.
+- **Export needs the desktop app.** Orca's browser version has no save dialog, so the export buttons only appear on desktop.
+- **No SQL export.** The official SQL exporter weighs about 16 MB, which is too much to bundle. You can run [`@dbml/cli`](https://dbml.dbdiagram.io/cli) in a terminal instead, for example `dbml2sql schema.dbml --postgres`.
 
 ## Development
 
-The plugin needs Node.js 22 or newer and pnpm. The editor is a Preact app that esbuild bundles into the single file `editor/index.html`, because Orca's browser clients load a custom editor as one sandboxed document. That file is committed, since Orca installs plugins straight from Git without a build step.
+You need Node.js 22 or newer and pnpm. The editor is a Preact app that gets bundled into a single file, `editor/index.html`, and that file is committed because Orca installs plugins straight from Git without running a build.
 
 | Command          | What it does                                                                              |
 | ---------------- | ----------------------------------------------------------------------------------------- |
@@ -72,9 +74,9 @@ The plugin needs Node.js 22 or newer and pnpm. The editor is a Preact app that e
 | `pnpm validate`  | Runs `orca plugin validate .` (needs the Orca CLI)                                        |
 | `pnpm test:orca` | Adds the sync tests in `test/orca`, run on Orca's own editor session (needs the Orca CLI) |
 
-To try a change inside Orca, run `orca plugin dev watch .` in this folder. Orca reloads the editor each time `pnpm build` rewrites it.
+To try a change in Orca, run `orca plugin dev watch .` in this folder, and Orca will reload the editor after every `pnpm build`.
 
-Only `src/host` knows that Orca exists, and every other folder owns one part of the work.
+Only `src/host` talks to Orca, which is why the rest of the code also runs in the browser preview.
 
 | Folder        | Responsibility                                                                    |
 | ------------- | --------------------------------------------------------------------------------- |
@@ -90,8 +92,10 @@ Only `src/host` knows that Orca exists, and every other folder owns one part of 
 
 ## Releasing
 
-Bump `version` in `orca-plugin.json` and `package.json`, run `pnpm check`, commit, push, then push a matching tag such as `v1.2.0`. The Orca plugin directory lists the newest `vX.Y.Z` tag of any public repository with the `orca-plugin` topic.
+1. Bump `version` in `orca-plugin.json` and `package.json`.
+2. Run `pnpm check`, commit and push.
+3. Push a matching tag such as `v1.2.0`, and the Orca plugin directory will pick it up within the hour.
 
 ## License
 
-MIT. The bundled third-party packages keep their own licenses, which are reproduced in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+MIT. The bundled packages keep their own licenses, which are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
